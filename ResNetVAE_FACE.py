@@ -161,12 +161,12 @@ for epoch in range(epochs):
     # save all train test results
     A = np.array(epoch_train_losses)
     C = np.array(epoch_test_losses)
-    
-#     np.save(os.path.join(save_model_path, 'ResNet_VAE_training_loss.npy'), A)
-#     np.save(os.path.join(save_model_path, 'X_Olivetti_train_epoch{}.npy'.format(epoch + 1)), X_train)
-#     np.save(os.path.join(save_model_path, 'y_Olivetti_train_epoch{}.npy'.format(epoch + 1)), y_train)
-#     np.save(os.path.join(save_model_path, 'z_Olivetti_train_epoch{}.npy'.format(epoch + 1)), z_train)
-#
+    if epoch == epochs - 1:
+        np.save(os.path.join(save_model_path, 'ResNet_VAE_training_loss.npy'), A)
+        np.save(os.path.join(save_model_path, 'X_Olivetti_train_epoch{}.npy'.format(epoch + 1)), X_train)
+        np.save(os.path.join(save_model_path, 'y_Olivetti_train_epoch{}.npy'.format(epoch + 1)), y_train)
+        np.save(os.path.join(save_model_path, 'z_Olivetti_train_epoch{}.npy'.format(epoch + 1)), z_train)
+
 # # save Pytorch models of best record
 torch.save(resnet_vae.state_dict(), os.path.join(save_model_path, 'model_epoch{}.pth'.format(epochs)))  # save motion_encoder
 torch.save(optimizer.state_dict(), os.path.join(save_model_path, 'optimizer_epoch{}.pth'.format(epochs)))      # save optimizer
