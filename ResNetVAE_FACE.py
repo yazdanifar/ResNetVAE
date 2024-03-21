@@ -23,7 +23,6 @@ CNN_embed_dim = 256     # latent dim extracted by 2D CNN
 res_size = 224        # ResNet image size
 dropout_p = 0.2       # dropout probability
 
-
 # training parameters
 epochs = 100        # training epochs
 batch_size = 50
@@ -127,10 +126,6 @@ def validation(model, device, optimizer, test_loader):
 use_cuda = torch.cuda.is_available()                   # check if GPU exists
 device = torch.device("cuda" if use_cuda else "cpu")   # use CPU or GPU
 
-# Data loading parameters
-params = {'batch_size': batch_size, 'shuffle': True, 'num_workers': 2, 'pin_memory': True} if use_cuda else {}
-
-
 # Load the faces datasets
 data = fetch_olivetti_faces()
 face_img = data.images.reshape((data.images.shape[0], data.images.shape[1], data.images.shape[2]))
@@ -141,8 +136,10 @@ labels = torch.from_numpy(data.target)
 
 olivetti_data = TensorDataset(face_img_resized, labels)
 # Data loader (input pipeline)
-train_loader = torch.utils.data.DataLoader(dataset=olivetti_data, **params)
-valid_loader = torch.utils.data.DataLoader(dataset=olivetti_data, **params)
+train_loader = torch.utils.data.DataLoader(dataset=olivetti_data, batch_size=batch_size, shuffle=True, num_workers=2,
+                                           pin_memory=True, drop_last=True)
+valid_loader = torch.utils.data.DataLoader(dataset=olivetti_data, batch_size=batch_size, shuffle=True, num_workers=2,
+                                           pin_memory=True, drop_last=True)
 
 # Create model
 resnet_vae = ResNet_VAE(fc_hidden1=CNN_fc_hidden1, fc_hidden2=CNN_fc_hidden2, drop_p=dropout_p, CNN_embed_dim=CNN_embed_dim).to(device)
@@ -150,7 +147,6 @@ resnet_vae = ResNet_VAE(fc_hidden1=CNN_fc_hidden1, fc_hidden2=CNN_fc_hidden2, dr
 print("Using", torch.cuda.device_count(), "GPU!")
 model_params = list(resnet_vae.parameters())
 optimizer = torch.optim.Adam(model_params, lr=learning_rate)
-
 
 # record training process
 epoch_train_losses = []
