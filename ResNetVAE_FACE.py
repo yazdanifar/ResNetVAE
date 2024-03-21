@@ -168,6 +168,6 @@ for epoch in range(epochs):
 #     np.save(os.path.join(save_model_path, 'z_Olivetti_train_epoch{}.npy'.format(epoch + 1)), z_train)
 #
 # # save Pytorch models of best record
-torch.save(resnet_vae.state_dict(), os.path.join(save_model_path, 'model_epoch{}.pth'.format(epoch + 1)))  # save motion_encoder
-torch.save(optimizer.state_dict(), os.path.join(save_model_path, 'optimizer_epoch{}.pth'.format(epoch + 1)))      # save optimizer
+torch.save(resnet_vae.state_dict(), os.path.join(save_model_path, 'model_epoch{}.pth'.format(epochs)))  # save motion_encoder
+torch.save(optimizer.state_dict(), os.path.join(save_model_path, 'optimizer_epoch{}.pth'.format(epochs)))      # save optimizer
 print("Epoch {} model saved!".format(epoch + 1))
