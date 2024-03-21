@@ -81,11 +81,6 @@ def train(log_interval, model, device, train_loader, optimizer, epoch):
     all_mu = np.stack(all_mu, axis=0)
     all_logvar = np.stack(all_logvar, axis=0)
 
-    # save Pytorch models of best record
-    torch.save(model.state_dict(), os.path.join(save_model_path, 'model_epoch{}.pth'.format(epoch + 1)))  # save motion_encoder
-    torch.save(optimizer.state_dict(), os.path.join(save_model_path, 'optimizer_epoch{}.pth'.format(epoch + 1)))      # save optimizer
-    print("Epoch {} model saved!".format(epoch + 1))
-
     return all_X, all_y, all_z, all_mu, all_logvar, losses
 
 
@@ -172,3 +167,7 @@ for epoch in range(epochs):
     np.save(os.path.join(save_model_path, 'y_Olivetti_train_epoch{}.npy'.format(epoch + 1)), y_train)
     np.save(os.path.join(save_model_path, 'z_Olivetti_train_epoch{}.npy'.format(epoch + 1)), z_train)
 
+# save Pytorch models of best record
+torch.save(resnet_vae.state_dict(), os.path.join(save_model_path, 'model_epoch{}.pth'.format(epoch + 1)))  # save motion_encoder
+torch.save(optimizer.state_dict(), os.path.join(save_model_path, 'optimizer_epoch{}.pth'.format(epoch + 1)))      # save optimizer
+print("Epoch {} model saved!".format(epoch + 1))
